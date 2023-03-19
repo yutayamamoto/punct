@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
-# ピリオドカンマを句読点 (。、) に変換するプログラム
-# 直後に空白もしくは改行が続かない場合 ("hoge.huga" など) は変換しない。
-
 import re
 import sys
+import argparse
 
 def replace_punctuation(input_file, output_file):
     with open(input_file, 'r', encoding='utf-8') as f:
@@ -18,7 +16,16 @@ def replace_punctuation(input_file, output_file):
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(text)
 
-input_file = sys.argv[1]
-output_file = sys.argv[2]
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog="punct.py", description='convert japanese punctuation style')
 
-replace_punctuation(input_file, output_file)
+    parser.add_argument('input_filename')
+    parser.add_argument('output_filename')
+    args = parser.parse_args()
+
+    if args.input_filename == args.output_filename:
+        print('Specify different names for input and output files.')
+        sys.exit()
+
+    replace_punctuation(args.input_filename, args.output_filename)
+
